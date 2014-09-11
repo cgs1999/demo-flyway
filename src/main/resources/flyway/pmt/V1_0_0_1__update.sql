@@ -1,3 +1,5 @@
+use `flyway_pmt`;
+
 -- recipe 复杂属性
 CREATE TABLE `complex_property`(
 	`id` int not null AUTO_INCREMENT,

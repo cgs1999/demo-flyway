@@ -1,4 +1,4 @@
-use `demo-flyway`;
+use `flyway_pmt`;
 -- 环境 方案 
 CREATE TABLE env(
 	id varchar(36) not null,

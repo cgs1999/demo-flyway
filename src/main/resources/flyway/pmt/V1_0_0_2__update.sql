@@ -1,3 +1,5 @@
+use `flyway_pmt`;
+
 -- 初始化运营商名称
 insert ignore into code_class(id,class_code,cn_name) values('oper1','operator','运营商');
 insert ignore into code_def(id,codeclass_id,code,cn_name) 

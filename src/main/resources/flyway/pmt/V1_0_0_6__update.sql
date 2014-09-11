@@ -1,3 +1,5 @@
+use `flyway_pmt`;
+
 -- 国际化信息 
 CREATE TABLE env_language(
 	id varchar(36) not null,

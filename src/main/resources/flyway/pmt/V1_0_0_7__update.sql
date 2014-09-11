@@ -1,3 +1,5 @@
+use `flyway_pmt`;
+
 -- 增加 "是否需要自动扫描内网","内网IP范围"
 --insert into sys_cfg (prop_key,prop_value) values('is_auto_scan_inner_net','0');
 --insert into sys_cfg (prop_key,prop_value) values('inner_net_section','');

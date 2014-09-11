@@ -17,9 +17,19 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class DatabaseFlywayMigration {
 
 	private DataSource dataSource;
+	private String locations = "flyway";
+	private String encoding = "UTF-8";
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+
+	public void setLocations(String locations) {
+		this.locations = locations;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 
 	public void migrate() {
@@ -32,8 +42,8 @@ public class DatabaseFlywayMigration {
 		// flyway.init();
 		// }
 		// flyway.setSchemas("win"); // 设置接受flyway进行版本管理的多个数据库
-		flyway.setLocations("flyway"); // 设置flyway扫描sql升级脚本、java升级脚本的目录路径或包路径
-		flyway.setEncoding("UTF-8"); // 设置sql脚本文件的编码
+		flyway.setLocations(locations); // 设置flyway扫描sql升级脚本、java升级脚本的目录路径或包路径
+		flyway.setEncoding(encoding); // 设置sql脚本文件的编码
 		flyway.setOutOfOrder(true);
 		// flyway.setValidationMode(ValidationMode.ALL); //
 		// 设置执行migrate操作之前的validation行为
@@ -52,12 +62,42 @@ public class DatabaseFlywayMigration {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		migratePmt();
+
+		migrateAp();
+
+		migrateMovision();
+	}
+
+	private static void migratePmt() {
+		DatabaseFlywayMigration migration = new DatabaseFlywayMigration();
+		migration.setLocations("flyway/pmt");
+		migration.setDataSource(getDatasource("flyway_pmt"));
+		migration.migrate();
+	}
+
+	private static void migrateAp() {
+		DatabaseFlywayMigration migration = new DatabaseFlywayMigration();
+		migration.setLocations("flyway/ap");
+		migration.setDataSource(getDatasource("flyway_ap"));
+		migration.migrate();
+	}
+
+	private static void migrateMovision() {
+		DatabaseFlywayMigration migration = new DatabaseFlywayMigration();
+		migration.setLocations("flyway/movision");
+		migration.setDataSource(getDatasource("flyway_movision"));
+		migration.migrate();
+	}
+
+	private static ComboPooledDataSource getDatasource(String dbName) {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		try {
 			dataSource.setDriverClass("com.mysql.jdbc.Driver");
-			dataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/demo-flyway?useUnicode=true&characterEncoding=utf-8");
-			dataSource.setUser("root");
-			dataSource.setPassword("");
+			dataSource.setJdbcUrl("jdbc:mysql://172.16.8.70:3306/" + dbName
+					+ "?useUnicode=true&characterEncoding=utf-8");
+			dataSource.setUser("admin");
+			dataSource.setPassword("itserver");
 			dataSource.setIdleConnectionTestPeriod(30);
 			dataSource.setInitialPoolSize(10);
 			dataSource.setMaxIdleTime(30);
@@ -69,9 +109,6 @@ public class DatabaseFlywayMigration {
 			e.printStackTrace();
 		}
 
-		DatabaseFlywayMigration migration = new DatabaseFlywayMigration();
-		migration.setDataSource(dataSource);
-		migration.migrate();
+		return dataSource;
 	}
-
 }

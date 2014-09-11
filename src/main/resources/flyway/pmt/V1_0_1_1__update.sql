@@ -1,3 +1,5 @@
+use `flyway_pmt`;
+
 -- 修改应用附件文件的表名
 rename table upload_file to app_upload_file;
 
